@@ -56,6 +56,7 @@ fun AuditScreen(
                 updateFirstWork = viewModel::updateFirstWork,
                 secondWorkFlow = viewModel.secondWorkStateFlow,
                 updateSecondWork = viewModel::updateSecondWork,
+                showErrorFlow = viewModel.showTextFieldError,
             )
 
             WorkInputCard(
@@ -65,6 +66,7 @@ fun AuditScreen(
                 updateFirstWork = viewModel::updateFirstMess,
                 secondWorkFlow = viewModel.secondMessStateFlow,
                 updateSecondWork = viewModel::updateSecondMess,
+                showErrorFlow = viewModel.showTextFieldError,
             )
 
             Spacer(modifier = Modifier.height(16.dp))

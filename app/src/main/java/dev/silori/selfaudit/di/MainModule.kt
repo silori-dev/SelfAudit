@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.silori.selfaudit.data.dao.AuditDao
 import dev.silori.selfaudit.data.dataStore.DataStoreManager
 import dev.silori.selfaudit.data.database.AuditDatabase
 import javax.inject.Singleton
@@ -26,4 +27,5 @@ object MainModule {
         Room
             .databaseBuilder(appContext, AuditDatabase::class.java, AuditDatabase.DATABASE_NAME)
             .build()
+
 }

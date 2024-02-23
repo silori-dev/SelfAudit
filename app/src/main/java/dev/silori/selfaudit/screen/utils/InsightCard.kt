@@ -78,7 +78,7 @@ fun InsightCard(
                     .padding(end = 32.dp, top = 4.dp)
                     .align(Alignment.TopEnd),
                 text = "Productivity = ${auditData.productivity}",
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         }
     }
@@ -105,10 +105,12 @@ fun CardSurfaceGood(
             Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
                 Text(text = date, fontWeight = FontWeight.Bold)
                 Text(
-                    text = firstWork
-                )
+                    text = firstWork,
+                    minLines = 2,
+                    )
                 Text(
-                    text = secondWork
+                    text = secondWork,
+                    minLines = 2,
                 )
             }
         }
@@ -139,10 +141,12 @@ fun CardSurfaceBad(
             ) {
                 Text(text = "")
                 Text(
-                    text = firstMess
+                    text = firstMess,
+                    minLines = 2,
                 )
                 Text(
-                    text = secondMess
+                    text = secondMess,
+                    minLines = 2,
                 )
             }
         }

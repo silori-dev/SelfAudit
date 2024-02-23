@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InsightViewModel @Inject constructor(
-     val repo: AuditRepo
+    private val repo: AuditRepo
 ) : ViewModel() {
 
     val chartEntryModelProducer = ChartEntryModelProducer(listOf<FloatEntry>())
@@ -36,10 +36,11 @@ class InsightViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            repo.getAuditByMonth(month = getCurrentMonth(), year = getCurrentYear().toString()).collect {
-                _insightData.value = it
-                this.coroutineContext.job.cancel()
-            }
+            repo.getAuditByMonth(month = getCurrentMonth(), year = getCurrentYear().toString())
+                .collect {
+                    _insightData.value = it
+                    this.coroutineContext.job.cancel()
+                }
         }
 
         viewModelScope.launch {
@@ -57,18 +58,21 @@ class InsightViewModel @Inject constructor(
                     year = timeFrame.year
                 )
             }
+
             SecondLastMonth -> {
                 collectAuditByMonth(
                     month = timeFrame.month,
                     year = timeFrame.year
                 )
             }
+
             ThisMonth -> {
                 collectAuditByMonth(
                     month = timeFrame.month,
                     year = timeFrame.year
                 )
             }
+
             ThisYear -> {
                 collectAuditByYear(year = timeFrame.year)
             }

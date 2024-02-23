@@ -12,6 +12,5 @@ val Green200 = Color(0xFFC4EE9F)
 val Green500 = Color(0xFF9ADF5C)
 val Green700 = Color(0xFF73D120)
 
-
-//val LightGreen = Color(0xFF9ADF5C)
 val LightRed = Color(0xFFFC7F57)
+val Red700 = Color(0xFFBD2E24)

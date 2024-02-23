@@ -13,8 +13,7 @@ import javax.inject.Singleton
 
 @Module 
 @InstallIn(SingletonComponent::class)
-interface AuditModule {
-
+interface  AuditModule {
 
     @Singleton
     @Binds

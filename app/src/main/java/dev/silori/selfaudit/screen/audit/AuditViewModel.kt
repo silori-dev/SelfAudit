@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuditViewModel @Inject constructor(
-     val repo: AuditRepo
+    private val repo: AuditRepo
 ) : ViewModel() {
 
     private val _firstWork = MutableStateFlow<String>("")
@@ -31,6 +31,9 @@ class AuditViewModel @Inject constructor(
 
     private val _productivity = MutableStateFlow<Float>(5.0f)
     val productivityStateFlow: StateFlow<Float> = _productivity
+
+    private val _showTextFieldError = MutableStateFlow(false)
+    val showTextFieldError: StateFlow<Boolean> = _showTextFieldError
 
     fun updateFirstWork(value: String) {
         _firstWork.value = value
@@ -53,21 +56,32 @@ class AuditViewModel @Inject constructor(
     }
 
     fun saveTodayStats() {
-        // TODO : Check if info is empty or not
         // TODO : Show the Toast "Audit Saved"
-        viewModelScope.launch {
-            repo.addAudit(
-                AuditData(
-                    date = getTodayDate(),
-                    firstWork = _firstWork.value,
-                    secondWork = _secondWork.value,
-                    firstMess = _firstMess.value,
-                    secondMess = _secondMess.value,
-                    productivity = _productivity.value.toInt(),
+        if (isInfoEmpty()) {
+            _showTextFieldError.value = true
+        } else {
+            viewModelScope.launch {
+                repo.addAudit(
+                    AuditData(
+                        date = getTodayDate(),
+                        firstWork = _firstWork.value.trim(),
+                        secondWork = _secondWork.value.trim(),
+                        firstMess = _firstMess.value.trim(),
+                        secondMess = _secondMess.value.trim(),
+                        productivity = _productivity.value.toInt(),
+                    )
                 )
-            )
-            emptyAuditData()
+                emptyAuditData()
+            }
         }
+    }
+
+    private fun isInfoEmpty(): Boolean {
+        return (_firstWork.value.trim().isEmpty() ||
+                _secondWork.value.trim().isEmpty() ||
+                _firstMess.value.trim().isEmpty() ||
+                _secondMess.value.trim().isEmpty()
+                )
     }
 
     private fun emptyAuditData() {
@@ -76,6 +90,7 @@ class AuditViewModel @Inject constructor(
         _firstMess.value = ""
         _secondMess.value = ""
         _productivity.value = 5f
+        _showTextFieldError.value = false
     }
 
 }
