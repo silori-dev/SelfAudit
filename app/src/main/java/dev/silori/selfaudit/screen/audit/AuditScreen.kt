@@ -19,6 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,6 +34,7 @@ fun AuditScreen(
     viewModel: AuditViewModel = hiltViewModel(),
 ) {
     val sliderPosition = viewModel.productivityStateFlow.collectAsState()
+    val localFocus = LocalFocusManager.current
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -57,6 +60,8 @@ fun AuditScreen(
                 secondWorkFlow = viewModel.secondWorkStateFlow,
                 updateSecondWork = viewModel::updateSecondWork,
                 showErrorFlow = viewModel.showTextFieldError,
+                onNext={  localFocus.moveFocus(FocusDirection.Down)},
+                onDone ={  localFocus.clearFocus()}
             )
 
             WorkInputCard(
@@ -67,6 +72,8 @@ fun AuditScreen(
                 secondWorkFlow = viewModel.secondMessStateFlow,
                 updateSecondWork = viewModel::updateSecondMess,
                 showErrorFlow = viewModel.showTextFieldError,
+                onNext={  localFocus.moveFocus(FocusDirection.Down)},
+                onDone ={  localFocus.clearFocus()}
             )
 
             Spacer(modifier = Modifier.height(16.dp))

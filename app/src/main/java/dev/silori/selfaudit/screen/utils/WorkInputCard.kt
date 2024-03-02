@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActionScope
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -34,7 +36,9 @@ fun WorkInputCard(
     updateFirstWork: (String) -> Unit,
     updateSecondWork: (String) -> Unit,
     secondWorkFlow: StateFlow<String>,
-    showErrorFlow: StateFlow<Boolean>
+    showErrorFlow: StateFlow<Boolean>,
+    onNext: (KeyboardActionScope) -> Unit,
+    onDone: (KeyboardActionScope) -> Unit,
 ) {
 
     Surface(
@@ -58,26 +62,32 @@ fun WorkInputCard(
             ErrorTextField(
                 workFlow = firstWorkFlow,
                 updateWork = updateFirstWork,
-                showErrorFlow = showErrorFlow
+                showErrorFlow = showErrorFlow,
+                onNext = onNext,
+                onDone = onDone,
             )
             Spacer(modifier = Modifier.height(8.dp))
             ErrorTextField(
                 workFlow = secondWorkFlow,
                 updateWork = updateSecondWork,
-                showErrorFlow = showErrorFlow
+                showErrorFlow = showErrorFlow,
+                onNext = onNext,
+                onDone = onDone,
             )
         }
     }
 }
 
-// TODO : Add Keyboard Next Item
-
 @Composable
 fun ErrorTextField(
     workFlow: StateFlow<String>,
     updateWork: (String) -> Unit,
-    showErrorFlow: StateFlow<Boolean>
-) {
+    showErrorFlow: StateFlow<Boolean>,
+    onNext: (KeyboardActionScope) -> Unit,
+    onDone: (KeyboardActionScope) -> Unit,
+    imeAction: ImeAction = ImeAction.Next,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    ) {
 
     val showError by showErrorFlow.collectAsState()
     val firstWork by workFlow.collectAsState()
@@ -112,8 +122,12 @@ fun ErrorTextField(
             unfocusedIndicatorColor = Color.Black,
         ),
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Done
+            keyboardType = keyboardType,
+            imeAction = imeAction
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = onDone,
+            onNext = onNext
         ),
     )
 }
