@@ -92,6 +92,7 @@ fun AuditScreen(
 
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
                 Button(onClick = {
+                    localFocus.clearFocus()
                     viewModel.saveTodayStats()
                 },
                     shape = RoundedCornerShape(8.dp),
