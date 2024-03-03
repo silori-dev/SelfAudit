@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -24,13 +26,14 @@ fun TimeFrameRow(
     onTimeFrameClicked : (timeFrame : TimeFrame) -> Unit,
 ) {
 
-    Row(
+    LazyRow(
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        listOfTimeFrame.forEach { timeFrame ->
+
+        items(listOfTimeFrame){timeFrame ->
             TimeFrameCard(
                 thisTimeFrame = timeFrame,
                 selectedTimeFrameTag = selectedTimeFrame,
