@@ -3,13 +3,14 @@ package dev.silori.selfaudit.screen.utils
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
 import com.patrykandpatrick.vico.compose.chart.Chart
 import com.patrykandpatrick.vico.compose.chart.line.lineChart
+import com.patrykandpatrick.vico.compose.chart.scroll.ChartScrollState
 import com.patrykandpatrick.vico.core.axis.Axis
-import com.patrykandpatrick.vico.core.axis.AxisItemPlacer
 import com.patrykandpatrick.vico.core.axis.AxisPosition
 import com.patrykandpatrick.vico.core.axis.formatter.AxisValueFormatter
 import com.patrykandpatrick.vico.core.chart.values.AxisValuesOverrider
@@ -32,14 +33,23 @@ fun GraphScreen(
         axisValuesOverrider = AxisValuesOverrider.fixed(minY = 0f, maxY = 10f),
     )
 
+    val chartScrollState = remember { ChartScrollState() }
+
+
     Chart(
         modifier = Modifier
             .fillMaxHeight(0.4f)
             .fillMaxWidth(),
         chart = lineChart,
         chartModelProducer = graphData,
-        startAxis = rememberStartAxis(sizeConstraint = Axis.SizeConstraint.Auto(), itemPlacer = AxisItemPlacer.Vertical.default(maxItemCount = 11)),
-        bottomAxis = rememberBottomAxis(valueFormatter = horizontalAxisValueFormatter, labelRotationDegrees = 300f),
+        startAxis = rememberStartAxis(
+            sizeConstraint = Axis.SizeConstraint.Auto(),
+            itemPlacer = CustomAxisItemPlacer(),
+            ),
+        bottomAxis = rememberBottomAxis(
+            valueFormatter = horizontalAxisValueFormatter,
+            labelRotationDegrees = 300f
+        ),
+        chartScrollState = chartScrollState
     )
-
 }
